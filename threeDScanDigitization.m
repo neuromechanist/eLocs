@@ -4,10 +4,10 @@ function elocs = threeDScanDigitization(varargin)
 % electrode locations (elocs) on the cap.
 %
 % Requirements:
-%           Matlab R2018a+, Statistics and Machine Learning Toolbox.
-%           this function uses tables, with specific features that are
-%           available from R2018a+. If you are at an earlier relase, let me
-%           know, I'll try to make the compatible version.
+%           Matlab R2017b+, Statistics and Machine Learning Toolbox.
+%           This function uses tables, with features available from
+%           R2017b+. If you are at an earlier relase, let me know, I'll try
+%           to make the compatible version. 
 %
 % INPUT:
 %       Inputs are names pairs:
@@ -73,7 +73,7 @@ fPath = pwd; % function path
         arg({'repoPath','RepoPath','repository_path'},[fPath fs 'sample' fs 'threeD' fs] ,[],'The repository containing folders w/ subject names.'), ...
         arg({'subj','Subject','subject'}, 'S1',[],'Default smaple is the Structure sensor.'), ...
         arg({'savePath','SavePath','save_path'}, [fPath fs 'sample' fs 'threeD' fs 'output'],[],'The path for the electrode locations output'), ...
-        arg({'saveFlag','save_flag','SaveFlag'}, 0,[0 1],'Save flag for electrode location, change it to one if you need the eloc files'));
+        arg({'saveFlag','save_flag','SaveFlag'}, 0,[0 1],'Save flag, 1 to save in save Path, 0 to ignore'));
  
     p2l.repo = string(opts.repoPath);
     subj = string(opts.subj);
@@ -89,13 +89,13 @@ fPath = pwd; % function path
     end
         
     %% create file paths and load data
-    f2l.all = dir(p2l.scan);
+    f2l.all = dir(char(p2l.scan));
     f2l.nameString = string({f2l.all.name});
     if find(contains(string({f2l.all.name}),"Model","IgnoreCase",true)) % make sure that "model" is not a directory, this happens for the structure scan
         dirFlag = [f2l.all.isdir];
         if find(dirFlag(contains(f2l.nameString,"model","IgnoreCase",true)))
             p2l.scan = p2l.scan + "model" + string(fs);
-            f2l.all = dir(p2l.scan);
+            f2l.all = dir(char(p2l.scan));
             f2l.nameString = string({f2l.all.name});
         end
     end

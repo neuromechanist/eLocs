@@ -3,10 +3,10 @@ function elocs = mocapProbeDigitization(varargin)
 % electrode locations (elocs) on the cap.
 %
 % Requirements:
-%           Matlab R2018a+, Statistics and Machine Learning Toolbox.
-%           this function uses tables, with specific features that are
-%           available from R2018a+. If you are at an earlier relase, let me
-%           know, I'll try to make the compatible version.
+%           Matlab R2017b+, Statistics and Machine Learning Toolbox.
+%           This function uses tables, with features available from
+%           R2017b+. If you are at an earlier relase, let me know, I'll try
+%           to make the compatible version. 
 %
 % INPUT:
 %       Inputs are names pairs:
@@ -127,7 +127,7 @@ M = table; % a table of Markers of electrodes and fiducials
     end
     M = [M;fid];
     mLabels = [chanlabels "cms" "drl" "lP" "nZ" "rP"]; % Marker labels
-    M.Properties.RowNames = mLabels;
+    M.Properties.RowNames = cellstr(mLabels);
 
 %% Sort and check face markers
 % sometimes, face markers flip, left and right, and are need to be checked
