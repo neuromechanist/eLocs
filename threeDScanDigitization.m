@@ -1,4 +1,62 @@
 function elocs = threeDScanDigitization(varargin)
+% threeDScanDigitization takes 3D scans from the head (using Strucutre or others)
+% and runs through the Fieldtrip toolbox fucntion for digitization.
+% electrode locations (elocs) on the cap.
+%
+% Requirements:
+%           Matlab R2018a+, Statistics and Machine Learning Toolbox.
+%           this function uses tables, with specific features that are
+%           available from R2018a+. If you are at an earlier relase, let me
+%           know, I'll try to make the compatible version.
+%
+% INPUT:
+%       Inputs are names pairs:
+%   'repoPath' : repository path, the path that contains the subject
+%       folders. for example if the scans are for the subject S1, the path
+%       to the scan will be: "repoPath/S1/". Default is the sample folder
+%       included in the toolbox.
+%
+%   'subject' : the name of the subject as a character array. Default
+%       is S1 which is the smaple file for the Structure scan.
+%       
+%   'savePath' : The path that the files should be saved there. The
+%       function does not create the path, rather uses it. Default is the
+%       "output" folder available in the "sample" path of the toolbox.
+%
+%   'saveFlag' : whether the files are saved or not, default is 0, so it is
+%       NOT saving your output.
+%       
+% OUTPUT:
+%    'out': the structure that contains three tables containing elocs
+%        out.zebris is the similar format as a zebris file.
+%        out.tenTen contains elocs with the labels that are compatible
+%        w/ the 10-10 system, so you can use EEGLAB's COREGISTER
+%        function to fully warp the elocs.
+%        out.adjustedLabels is the same as the zebris fule, but fiducial
+%        names are changed to LPA, Nz and RPA for fiducial warping using
+%        EEGLAB COREGISTER.
+%        If neithe "out" is specified nor "saveF" (or if saveF = 0), the
+%        function will save the eLocs to the same folder that it read the
+%        proble files from.
+%
+% EXAMPLE:
+%   threeDScanDigitization('repoPath','~/scan/','subject','S1','savePath', ...
+%                            '~/scan/output/','saveFlag',1);
+%
+%
+% REV:
+%       v0 @ 3/20/2019 adopted from runMocapZebris.m @
+%       github.com/neuromechanist/digitization
+%
+% REFERENCE:
+%       To use this toolbox, please cite:
+%           Shirazi & Huang, bioRxiv, 557074, 2019, doi:10.1101/557074.
+%
+%
+% Created by: Seyed Yahya Shirazi, BRaIN Lab, UCF
+% email: shirazi@ieee.org
+%
+% Copyright 2019 Seyed Yahya Shirazi, UCF, Orlando, FL 32826
 
 %% intialize
 strips = ["A","B","C","D"]; %strip letters
@@ -35,7 +93,7 @@ fPath = pwd; % function path
     f2l.nameString = string({f2l.all.name});
     if find(contains(string({f2l.all.name}),"Model","IgnoreCase",true)) % make sure that "model" is not a directory, this happens for the structure scan
         dirFlag = [f2l.all.isdir];
-        if dirFlag(find(contains(f2l.nameString,"model","IgnoreCase",true),1))
+        if find(dirFlag(contains(f2l.nameString,"model","IgnoreCase",true)))
             p2l.scan = p2l.scan + "model" + string(fs);
             f2l.all = dir(p2l.scan);
             f2l.nameString = string({f2l.all.name});

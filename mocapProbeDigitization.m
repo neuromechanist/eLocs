@@ -1,38 +1,55 @@
 function elocs = mocapProbeDigitization(varargin)
-% This function takes mocap probe digitization files and parse the
+% mocapProbeDigitization takes mocap probe digitization files and parse the
 % electrode locations (elocs) on the cap.
 %
 % Requirements:
-%           Matlab R2018a+, Statistics and Machine Learning Toolbox
+%           Matlab R2018a+, Statistics and Machine Learning Toolbox.
 %           this function uses tables, with specific features that are
-%           available from R2018+, incl. defining a table by the types of
-%           the variables it uses and using string arrays as variable/row
-%           names. If you are at an earlier relase, let me know, I'll try
-%           to make the compatible version for you.
+%           available from R2018a+. If you are at an earlier relase, let me
+%           know, I'll try to make the compatible version.
 %
 % INPUT:
-%       p2l.probe: the path to the folder that contains mocap probe files.
-%       My current setup is for BioSemi 128 cap. The digitizing proceudre
-%       is to record each strip in 1 take + 1 take for the CMS, DRL and the
-%       fiducials. Therefore, there should be 5 files in the folder.
+%       Inputs are names pairs:
+%   'repoPath' : repository path, the path that contains the subject
+%       folders. for example if the scans are for the subject S1, the path
+%       to the scan will be: "repoPath/S1/". Default is the sample folder
+%       included in the toolbox.
+%
+%   'subject' : the name of the subject as a character array. Default
+%       is S1 which is the smaple file for the Structure scan.
+%       
+%   'savePath' : The path that the files should be saved there. The
+%       function does not create the path, rather uses it. Default is the
+%       "output" folder avaible in the "sample" path of the toolbox.
+%
+%   'saveFlag' : whether the files are saved or not, default is 0, so it is
+%       NOT saving your output.
+%       
 % OUTPUT:
-%       out: the structure that contains three tables containing elocs
-%           out.zebris is the similar format as a zebris file.
-%           out.tenTen contains elocs with the labels that are compatible
-%           w/ the 10-10 system, so you can use EEGLAB's COREGISTER
-%           function to fully warp the elocs.
-%           out.adjustedLabels is the same as the zebris fule, but fiducial
-%           names are changed to LPA, Nz and RPA for fiducial warping using
-%           EEGLAB COREGISTER.
+%    'out': the structure that contains three tables containing elocs
+%        out.zebris is the similar format as a zebris file.
+%        out.tenTen contains elocs with the labels that are compatible
+%        w/ the 10-10 system, so you can use EEGLAB's COREGISTER
+%        function to fully warp the elocs.
+%        out.adjustedLabels is the same as the zebris fule, but fiducial
+%        names are changed to LPA, Nz and RPA for fiducial warping using
+%        EEGLAB COREGISTER.
 %        If neithe "out" is specified nor "saveF" (or if saveF = 0), the
 %        function will save the eLocs to the same folder that it read the
 %        proble files from.
+%
+% EXAMPLE:
+%   mocapProbeDigitization('repoPath','~/probe/','subject','S1','savePath', ...
+%                            '~/probe/output/','saveFlag',1);
 %
 %
 % REV:
 %       v0 @ 3/20/2019 adopted from runMocapZebris.m @
 %       github.com/neuromechanist/digitization
 %
+% REFERENCE:
+%       To use this toolbox, please cite:
+%           Shirazi & Huang, bioRxiv, 557074, 2019, doi:10.1101/557074.
 %
 % Created by: Seyed Yahya Shirazi, BRaIN Lab, UCF
 % email: shirazi@ieee.org
@@ -41,8 +58,8 @@ function elocs = mocapProbeDigitization(varargin)
 
 %% intialize
 
-gTD = 0; % going to detail
-win = 50; % sampling window of probe, parameter in Motive, to average over to get face marker positions.
+gTD = 0; % going to detail, plots additional figures during the process
+win = 50; % sampling window of probe, a parameter set in Motive, to average over to get face marker positions.
 strips = ["A","B","C","D"]; %strip letters
 ne = 32; % number of electrodes in a strip
 ngrd_fid = 5; % number of points, cms, drl, 3 fiducials
