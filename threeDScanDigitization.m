@@ -101,10 +101,10 @@ fPath = pwd; % function path
     end
     
     if find(contains(string({f2l.all.name}),"mtl")) % Structure.io scan
-        f2l.scan = p2l.scan + string(f2l.nameString(find(contains(f2l.nameString,"obj"),1)));
+        f2l.scan = p2l.scan + f2l.nameString(find(contains(f2l.nameString,"obj"),1));
         
-    elseif contains(string({f2l.all.name}),"ply",'IgnoreCase',true) % Einscan or any other ply file
-        f2l.scan = p2l.scan + string(f2l.name(find(contains(f2l.nameString,"ply"),1)));
+    elseif find(contains(string({f2l.all.name}),"ply",'IgnoreCase',true)) % Einscan or any other ply file
+        f2l.scan = p2l.scan + f2l.nameString(find(contains(f2l.nameString,"ply"),1));
     else
         error("No scanned shape detected. Check your direcotry.")
     end

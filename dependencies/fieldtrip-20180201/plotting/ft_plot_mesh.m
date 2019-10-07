@@ -278,7 +278,7 @@ switch maskstyle
       end
     else
       % the color is indicated as a single character or as a single RGB triplet
-      set(hs, 'FaceColor', facecolor(1,:));
+      set(hs, 'FaceColor', [.8 .72 .58]);
     end
     
     % facealpha is a scalar, or an vector matching the number of vertices
