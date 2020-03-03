@@ -1,8 +1,9 @@
-function mTakeElocs = importMocapTakeElocs(mocapTakeFile,ne,win,gTD)
+function mTakeElocs = importMocapTakeElocs(mocapTakeFile,ne,win,gTD,label)
 
 %% import raw data
 hRows = 7; % header rows
 fileID = fopen(mocapTakeFile,'r');
+if ~exist('label','var') || isempty(label), label = "Unlabeled"; end
 
 for r = 1:hRows
     header{r} = fgetl(fileID);
@@ -39,7 +40,7 @@ data = cell2mat(dataCell);
 %% determine which unlabeled markers to use
 % sometimes, the facemarkers can be blocked, creating extra unlabeled
 % markers
-uIdx = find(contains(fullvarnames,"Unlabeled")==1); % Unlabeled markers index
+uIdx = find(contains(fullvarnames,label)==1); % Unlabeled markers index
 if mod(uIdx,3)~=0
     error("There is something wrong in Mocap data stream. Not all markers have x,y,z");
     return;

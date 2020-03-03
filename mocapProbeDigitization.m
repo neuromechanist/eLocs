@@ -34,7 +34,7 @@ function elocs = mocapProbeDigitization(varargin)
 %        out.adjustedLabels is the same as the zebris fule, but fiducial
 %        names are changed to LPA, Nz and RPA for fiducial warping using
 %        EEGLAB COREGISTER.
-%        If neithe "out" is specified nor "saveF" (or if saveF = 0), the
+%        If neither "out" is specified nor "saveF" (or if saveF = 0), the
 %        function will save the eLocs to the same folder that it read the
 %        proble files from.
 %
