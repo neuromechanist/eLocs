@@ -107,9 +107,9 @@ for i = 1:nUP
     % find first non-NAN for the recording the the eloctrode location.
     % Instant the marker for that electrode location was created
     fNN(i) = find(~isnan(UP(:,i*3)),1,'first'); 
-    f1{i,1:3} = nanmean(face{1}(fNN(i)-win:fNN(i),:)) ;
-    f2{i,1:3} = nanmean(face{2}(fNN(i)-win:fNN(i),:)) ;
-    f3{i,1:3} = nanmean(face{3}(fNN(i)-win:fNN(i),:)) ;
+    f1{i,1:3} = nanmean(face{1}(fNN(i):fNN(i)+win,:)) ;
+    f2{i,1:3} = nanmean(face{2}(fNN(i):fNN(i)+win,:)) ;
+    f3{i,1:3} = nanmean(face{3}(fNN(i):fNN(i)+win,:)) ;
     e{i,1:3} = UP(fNN(i),i*3-2:i*3);
 end
 f1.Properties.VariableNames = {'X','Y','Z'};

@@ -78,7 +78,7 @@ fPath = pwd; % function path
     p2l.repo = string(opts.repoPath);
     subj = string(opts.subj);
     p2l.probe = p2l.repo + subj + string(fs); 
-    if isempty(opts.savePath), opts.savePath = p2l.scan; end
+    if isempty(opts.savePath), opts.savePath = p2l.probe; end
     p2l.save = string(opts.savePath);
     saveF = opts.saveFlag;
 

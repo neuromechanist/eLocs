@@ -53,7 +53,7 @@ function localEloc = mocapDigitization(varargin)
 
 gTD = 0; % going to detail, plots additional figures during the process
 win = 50; % sampling window of probe, a parameter set in Motive, to average over to get face marker positions.
-ne = 35; % number of electrodes in a strip
+ne = 36; % number of electrodes in a strip
 addpath(genpath(['code' filesep]));
 addpath(genpath(['dependencies' filesep]));
 fs = filesep;
@@ -61,15 +61,15 @@ fPath = pwd; % function path
 
     %% parse out the inputs
     opts = arg_define(varargin, ...
-        arg({'repoPath','RepoPath','repository_path'},[fPath fs 'sample' fs 'probe' fs] ,[],'The repository containing folders w/ subject name.'), ...
-        arg({'subj','Subject','subject'}, 'H2',[],'Default smaple is the Structure sensor.'), ...
+        arg({'repoPath','RepoPath','repository_path'},[fPath fs 'sample' fs 'mocap' fs] ,[],'The repository containing folders w/ subject name.'), ...
+        arg({'subj','Subject','subject'}, 'M1',[],'Default smaple is the Structure sensor.'), ...
         arg({'savePath','SavePath','save_path'}, [],[],'The path for the electrode locations output'), ...
         arg({'saveFlag','save_flag','SaveFlag'}, 0,[0 1],'Save flag, change it to one if you need the eloc files'));
     
     p2l.repo = string(opts.repoPath);
     subj = string(opts.subj);
     p2l.mocap = p2l.repo + subj + string(fs); 
-    if isempty(opts.savePath), opts.savePath = p2l.scan; end
+    if isempty(opts.savePath), opts.savePath = p2l.mocap; end
     p2l.save = string(opts.savePath);
     saveF = opts.saveFlag;
 
@@ -99,7 +99,7 @@ ieloc = importMocapTakeElocs(char(f2l.mocap),ne,win,gTD,"Unlabeled");
 % we need to use the face markers as the new local cooridnates:
 
 % first find which face marker is which
-[ieloc.lM, ieloc.fH, ieloc.rM] = sortFaceMarkers(ieloc.f1,ieloc.f2,ieloc.f3,0,gTD); 
+[ieloc.lM, ieloc.fH, ieloc.rM] = sortFaceMarkers(ieloc.f1,ieloc.f2,ieloc.f3,1,gTD); 
 % then let's convert global coord. to local:
 for i = 1:size(ieloc,1)
     [~,lE(i,:)] = updateOrigin([ieloc.lM{i,:};ieloc.fH{i,:};ieloc.rM{i,:}],ieloc.e{i,:});
