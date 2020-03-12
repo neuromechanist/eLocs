@@ -87,6 +87,7 @@ fPath = pwd; % function path
     if nargout == 0 && saveF == 0
         p2l.save = p2l.scan; saveF = 1;
     end
+    f2l.save = p2l.save + subj; % output file name needs to have a subject identifier
         
     %% create file paths and load data
     f2l.all = dir(char(p2l.scan));
@@ -112,10 +113,7 @@ fPath = pwd; % function path
     headMesh = ft_read_headshape(char(f2l.scan)); % load the mesh, it takes a while
     % our Einscan is slready in milimeter, but if you want to convert it
     headMesh = ft_convert_units(headMesh,'mm');
-    
-    f2l.save = p2l.save + subj; % output file name needs to have a subject identifier
-
-    
+        
 %% pick the fiducials
 % First choose Left PA, then n and lastly Right PA
 config = [];
@@ -132,11 +130,10 @@ config.fiducial.lpa = fid.elecpos(1,:);
 config.fiducial.nas = fid.elecpos(2,:);
 config.fiducial.rpa = fid.elecpos(3,:);
 headMesh = ft_meshrealign(config,headMesh);
-
-    %% check axes
-    figure
-    ft_plot_axes(headMesh)
-    ft_plot_mesh(headMesh)
+% check axes
+figure
+ft_plot_axes(headMesh)
+ft_plot_mesh(headMesh)
     
 %% mark the electrodes
 % Choose in Strip Order (A -> B -> C -> D, then CMS, DRL, Left PA, Nasion & Right PA)

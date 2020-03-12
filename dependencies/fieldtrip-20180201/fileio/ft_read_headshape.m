@@ -726,20 +726,24 @@ switch fileformat
     shape.pos     = shape.pos - repmat(sum(shape.pos)/length(shape.pos),[length(shape.pos),1]); %centering vertices
     shape.tri     = obj.objects(2).data.vertices;
     if (~isempty(image) && exist('hasimage','var'))
-      texture = obj.vertices_texture;
-      
-      %Refines the mesh and textures to increase resolution of the
-      %colormapping
-      for i = 1:1
-        [shape.pos, shape.tri,texture] = refine(shape.pos,shape.tri,'banks',texture);
-      end
-      picture     = imread(image);
-      color = uint8(zeros(length(shape.pos),3));
-      for i=1:length(shape.pos)
-        color(i,1:3) = picture(floor((1-texture(i,2))*length(picture)),1+floor(texture(i,1)*length(picture)),1:3);
-      end
+        texture = obj.vertices_texture;
+        
+        %Refines the mesh and textures to increase resolution of the
+        %colormapping
+        for i = 1:1
+            [shape.pos, shape.tri,texture] = refine(shape.pos,shape.tri,'banks',texture);
+        end
+        picture     = imread(image);
+        color = uint8(zeros(length(shape.pos),3));
+        for i=1:length(shape.pos)
+            try
+                color(i,1:3) = picture(floor((1-texture(i,2))*length(picture)),1+floor(texture(i,1)*length(picture)),1:3);
+            catch
+                color(i,1:3) = [0 0 0]; % added to make sure that color is being added to the mesh
+            end
+        end
     end
-    
+        
   case 'vtk'
     [pos, tri] = read_vtk(filename);
     shape.pos = pos;

@@ -41,7 +41,7 @@ function unit = ft_estimate_units(size)
 
 % do some magic based on the size
 unit = {'m', 'dm', 'cm', 'mm'};
-est  = log10(size)+1.8;
+est  = log10(size)+1.65;
 indx = round(est);
 
 if indx>length(unit)
