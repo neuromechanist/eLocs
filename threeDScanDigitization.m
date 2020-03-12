@@ -74,7 +74,7 @@ fPath = pwd; % function path
         arg({'subj','Subject','subject'}, 'S1',[],'Default smaple is the Structure sensor.'), ...
         arg({'savePath','SavePath','save_path'}, [],[],'The path for the electrode locations output'), ...
         arg({'saveFlag','save_flag','SaveFlag'}, 0,[0 1],'Save flag, 1 to save in save Path, 0 to ignore'));
-    p2l.repo = string(opts.repoPath);
+    p2l.repo = string([opts.repoPath fs]);
     subj = string(opts.subj);
     p2l.scan = p2l.repo + subj + string(fs);
     if isempty(opts.savePath), opts.savePath = p2l.scan; end
@@ -146,6 +146,7 @@ config.method = 'headshape';
 warning("Mark the electrodes in order A-->D \& then CMS, DRL, LPA, Nz & RPA");
 digitizedHead = ft_electrodeplacement(config,headMesh);
 %electrode labels
+chanlabels = [];
 for i = 1:length(strips)
     for j = 1:ne
         chanlabels{(i-1)*ne+j} = [char(strips(i)) int2str(j)]; %#ok<*AGROW>
