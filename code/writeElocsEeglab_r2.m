@@ -49,6 +49,6 @@ load('zebris_labels3.mat','zLabel3');
 out.adjustedLabels = out.zebris;
 out.adjustedLabels.Properties.RowNames = zLabel3{:};
 if saveF
-writetable(out.zebris,SaveFile +"_AdjustedLabels.sfp",'FileType','text','WriteVariableNames',0,...
+writetable(out.adjustedLabels,SaveFile +"_AdjustedLabels.sfp",'FileType','text','WriteVariableNames',0,...
     'WriteRowNames',1,'Delimiter','tab');
 end
